@@ -43,13 +43,13 @@ private:
 
     std::vector<std::pair<eMenu, std::string>> mvMenu;
     std::vector<std::pair<ePlay, std::string>> mvPlay;
-    
-    std::vector<char> wName;
+
+    QString wName;
     std::vector<int>  wSeed;
-    
+
     bool nameinput{false};
     bool seedinput{false};
-    
+
     void _proccesing();
     void _draw();
 
