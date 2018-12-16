@@ -273,7 +273,29 @@ void Terraformator::_draw_randg()
 
 void Terraformator::_draw_seedg()
 {
+    static auto app_w = appSettings::instance().screenWidth()  /2.f;
+    static auto app_h = appSettings::instance().screenHeight() /3.f;
 
+    static auto font          = QFont("Sans", 25);
+    static auto Tfont         = QFont("Sans", 25);
+    Tfont.setBold(true);
+
+    auto x  = app_w - 100;
+    auto y  = app_h;
+    auto dy = 55.f;
+    auto dx = 20.f;
+    if(!nameinput)
+    {
+    renderText(x,y,"Input world name:", Tfont);
+    y += dy;
+    renderText(x, y, wName, font);
+    }
+    else
+    {
+        renderText(x,y,"Input seed:", Tfont);
+        y += dy;
+        renderText(x, y, wSeed, font);
+    }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -388,11 +410,233 @@ void Terraformator::_key_Released_load(int aKey)
         case Qt::Key_9:
             wName += '9';
             break;
+        case Qt::Key_Q:
+            wName += 'Q';
+            break;
+        case Qt::Key_W:
+            wName += 'W';
+            break;
+        case Qt::Key_E:
+            wName += 'E';
+            break;
+        case Qt::Key_R:
+            wName += 'R';
+            break;
+        case Qt::Key_T:
+            wName += 'T';
+            break;
+        case Qt::Key_Y:
+            wName += 'Y';
+            break;
+        case Qt::Key_U:
+            wName += 'U';
+            break;
+        case Qt::Key_I:
+            wName += 'I';
+            break;
+        case Qt::Key_O:
+            wName += 'O';
+            break;
+        case Qt::Key_P:
+            wName += 'P';
+            break;
+        case Qt::Key_A:
+            wName += 'A';
+            break;
+        case Qt::Key_S:
+            wName += 'S';
+            break;
+        case Qt::Key_D:
+            wName += 'D';
+            break;
+        case Qt::Key_F:
+            wName += 'F';
+            break;
+        case Qt::Key_G:
+            wName += 'G';
+            break;
+        case Qt::Key_H:
+            wName += 'H';
+            break;
+        case Qt::Key_J:
+            wName += 'J';
+            break;
+        case Qt::Key_K:
+            wName += 'K';
+            break;
+        case Qt::Key_L:
+            wName += 'L';
+            break;
+        case Qt::Key_Z:
+            wName += 'Z';
+            break;
+        case Qt::Key_X:
+            wName += 'X';
+            break;
+        case Qt::Key_C:
+            wName += 'C';
+            break;
+        case Qt::Key_V:
+            wName += 'V';
+            break;
+        case Qt::Key_B:
+            wName += 'B';
+            break;
+        case Qt::Key_N:
+            wName += 'N';
+            break;
+        case Qt::Key_M:
+            wName += 'M';
+            break;
         }
         updateGL();
     }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
     void Terraformator::_key_Released_seedg(int aKey)
     {
+        switch(aKey)
+        {
+        case Qt::Key_Escape:
+            mState = eState::MENU;
+            wName.clear();
+            nameinput = false;
+            break;
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+            if(!nameinput)
+                nameinput = true;
+            if(!seedinput)
+                seedinput = true;
+            break;
+        case Qt::Key_0:
+            if(nameinput)
+                wSeed += '0';
+            wName += '0';
+            break;
+        case Qt::Key_1:
+            if(nameinput)
+                wSeed += '1';
+            wName += '1';
+            break;
+        case Qt::Key_2:
+            if(nameinput)
+                wSeed += '2';
+            wName += '2';
+            break;
+        case Qt::Key_3:
+            if(nameinput)
+                wSeed += '3';
+            wName += '3';
+            break;
+        case Qt::Key_4:
+            if(nameinput)
+                wSeed += '4';
+            wName += '4';
+            break;
+        case Qt::Key_5:
+            if(nameinput)
+                wSeed += '5';
+            wName += '5';
+            break;
+        case Qt::Key_6:
+            if(nameinput)
+                wSeed += '6';
+            wName += '6';
+            break;
+        case Qt::Key_7:
+            if(nameinput)
+                wSeed += '7';
+            wName += '7';
+            break;
+        case Qt::Key_8:
+            if(nameinput)
+                wSeed += '8';
+            wName += '8';
+            break;
+        case Qt::Key_9:
+            if(nameinput)
+                wSeed += '9';
+            wName += '9';
+            break;
+        case Qt::Key_Q:
+            wName += 'Q';
+            break;
+        case Qt::Key_W:
+            wName += 'W';
+            break;
+        case Qt::Key_E:
+            wName += 'E';
+            break;
+        case Qt::Key_R:
+            wName += 'R';
+            break;
+        case Qt::Key_T:
+            wName += 'T';
+            break;
+        case Qt::Key_Y:
+            wName += 'Y';
+            break;
+        case Qt::Key_U:
+            wName += 'U';
+            break;
+        case Qt::Key_I:
+            wName += 'I';
+            break;
+        case Qt::Key_O:
+            wName += 'O';
+            break;
+        case Qt::Key_P:
+            wName += 'P';
+            break;
+        case Qt::Key_A:
+            wName += 'A';
+            break;
+        case Qt::Key_S:
+            wName += 'S';
+            break;
+        case Qt::Key_D:
+            wName += 'D';
+            break;
+        case Qt::Key_F:
+            wName += 'F';
+            break;
+        case Qt::Key_G:
+            wName += 'G';
+            break;
+        case Qt::Key_H:
+            wName += 'H';
+            break;
+        case Qt::Key_J:
+            wName += 'J';
+            break;
+        case Qt::Key_K:
+            wName += 'K';
+            break;
+        case Qt::Key_L:
+            wName += 'L';
+            break;
+        case Qt::Key_Z:
+            wName += 'Z';
+            break;
+        case Qt::Key_X:
+            wName += 'X';
+            break;
+        case Qt::Key_C:
+            wName += 'C';
+            break;
+        case Qt::Key_V:
+            wName += 'V';
+            break;
+        case Qt::Key_B:
+            wName += 'B';
+            break;
+        case Qt::Key_N:
+            wName += 'N';
+            break;
+        case Qt::Key_M:
+            wName += 'M';
+            break;
+        }
+        updateGL();
 
     }
