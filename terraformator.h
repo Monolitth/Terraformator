@@ -45,7 +45,7 @@ private:
     std::vector<std::pair<ePlay, std::string>> mvPlay;
 
     QString wName;
-    std::vector<int>  wSeed;
+    QString wSeed;
 
     bool nameinput{false};
     bool seedinput{false};
