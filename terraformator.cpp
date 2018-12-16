@@ -53,8 +53,8 @@ Terraformator::eState mPlayToGameState(const Terraformator::ePlay & aPlay)
 {
     switch(aPlay)
     {
-    case Terraformator::ePlay::GWORLDCHOOSER: return Terraformator::eState::RANDG;
-    case Terraformator::ePlay::GWORLDCHOOSEU: return Terraformator::eState::SEEDG;
+    case Terraformator::ePlay::GWORLDCHOOSER: return Terraformator::eState::SEEDG; // TODO: исправить несоответствие // repair it
+    case Terraformator::ePlay::GWORLDCHOOSEU: return Terraformator::eState::RANDG; // repair it
     }
     return Terraformator::eState::PLAY;
 }
@@ -128,8 +128,10 @@ void Terraformator::keyReleaseEvent(QKeyEvent* apKeyEvent)
         _key_Released_settings(apKeyEvent->key());
         break;
     case eState::RANDG:
+        _key_Released_randg(apKeyEvent->key());
         break;
     case eState::SEEDG:
+        _key_Released_seedg(apKeyEvent->key());
         break;
     }
 }
@@ -165,6 +167,12 @@ void Terraformator::_draw()
         break;
     case eState::PLAY:
         _draw_play();
+        break;
+    case eState::RANDG:
+        _draw_randg();
+        break;
+    case eState::SEEDG:
+        _draw_seedg();
         break;
     }
 }
@@ -249,16 +257,23 @@ void Terraformator::_draw_randg()
     static auto font          = QFont("Sans", 25);
     static auto Tfont         = QFont("Sans", 25);
     Tfont.setBold(true);
-    
+
     auto x  = app_w - 100;
     auto y  = app_h;
-    auto dy = 185.f;
+    auto dy = 55.f;
+    auto dx = 20.f;
+    if(!nameinput)
+    {
+    renderText(x,y,"Input world name:", Tfont);
+    y += dy;
+    renderText(x, y, wName, font);
+    }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 void Terraformator::_draw_seedg()
 {
-    
+
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -287,10 +302,10 @@ void Terraformator::_key_Released_play(int aKey)
     switch(aKey)
     {
     case     Qt::Key_Left:
-        --mPlay;
+        ++mPlay;
         break;
     case   Qt::Key_Right:
-        ++mPlay;
+        --mPlay;
         break;
     case  Qt::Key_Enter:
     case Qt::Key_Return:
@@ -333,35 +348,51 @@ void Terraformator::_key_Released_load(int aKey)
         {
         case Qt::Key_Escape:
             mState = eState::MENU;
-        case Qt::Key_1:
-        case Qt::Key_2:
-        case Qt::Key_3:
-        case Qt::Key_4:
-        case Qt::Key_5:
-        case Qt::Key_6:
-        case Qt::Key_7:
-        case Qt::Key_8:
-        case Qt::Key_9:
-        case Qt::Key_0:
-            if(nameinput = true)
-            {
-                wSeed.push_back(aKey);
-                break;
-            }
+            wName.clear();
+            nameinput = false;
+            break;
         case Qt::Key_Enter:
         case Qt::Key_Return:
             if(!nameinput)
                 nameinput = true;
             if(!seedinput)
                 seedinput = true;
-        case Qt::Key_Any:
-            if(!nameinput)
-                wName.push_back(aKey);
+            break;
+        case Qt::Key_0:
+            wName += '0';
+            break;
+        case Qt::Key_1:
+            wName += '1';
+            break;
+        case Qt::Key_2:
+            wName += '2';
+            break;
+        case Qt::Key_3:
+            wName += '3';
+            break;
+        case Qt::Key_4:
+            wName += '4';
+            break;
+        case Qt::Key_5:
+            wName += '5';
+            break;
+        case Qt::Key_6:
+            wName += '6';
+            break;
+        case Qt::Key_7:
+            wName += '7';
+            break;
+        case Qt::Key_8:
+            wName += '8';
+            break;
+        case Qt::Key_9:
+            wName += '9';
+            break;
         }
+        updateGL();
     }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
     void Terraformator::_key_Released_seedg(int aKey)
     {
-        
+
     }
-    
