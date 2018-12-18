@@ -1,4 +1,6 @@
 #include "wg.h"
+#include <time.h>
+#include <stdlib.h>
 
 int wg::getseednum(int seed) // number generation from seed
 {
@@ -9,7 +11,7 @@ int wg::getseednum(int seed) // number generation from seed
         return floor;
 }
 
-void wg::ds(vector<vector<int>> &map, int WS, int NHMax, int NHMin)
+void wg::ds(std::vector<std::vector<int>>&map, int WS, int NHMax, int NHMin)
 {
     //============================> World Generation <============================//
         srand(time(0));
@@ -58,7 +60,7 @@ void wg::ds(vector<vector<int>> &map, int WS, int NHMax, int NHMin)
         }
 }
 
-void wg::ds(vector<vector<int>> &map, int WS, int NHMax, int NHMin, int seed)
+void wg::ds(std::vector<std::vector<int>>&map, int WS, int NHMax, int NHMin, int seed)
 {
     //============================> World Generation <============================//
         srand(getseednum(seed));
