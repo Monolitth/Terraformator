@@ -2,6 +2,8 @@
 #define TERRAFORMATOR_H
 
 #include <QGLWidget>
+#include "wg.h"
+#include "preset.h"
 
 class Terraformator : public QGLWidget
 {
@@ -43,6 +45,8 @@ private:
 
     std::vector<std::pair<eMenu, std::string>> mvMenu;
     std::vector<std::pair<ePlay, std::string>> mvPlay;
+
+    std::vector<std::vector<int>> map;
 
     QString wName;
     QString wSeed;
