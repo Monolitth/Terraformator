@@ -1,6 +1,11 @@
 #include "terraformator.h"
 #include "appsettings.h"
+#include "preset.h"
+#include "wg.h"
 #include <QKeyEvent>
+#include <QFile>
+#include <QDir>
+#include <QTextStream>
 
 // Additional Func //
 Terraformator::eMenu operator++(Terraformator::eMenu &aMenu)
@@ -70,6 +75,14 @@ Terraformator::Terraformator()
 
     mvPlay.push_back({ePlay::GWORLDCHOOSER, "Random"});
     mvPlay.push_back({ePlay::GWORLDCHOOSEU, "User"});
+
+    for(size_t i = 0; i < WS; ++i) // Заполнение карты нулями
+        {
+            std::vector<int> temp;
+            for(size_t j = 0; j < WS; ++j)
+                temp.push_back(0);
+            map.push_back(temp);
+        }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 void Terraformator::InitializeGL()
@@ -264,6 +277,7 @@ void Terraformator::_draw_randg()
     auto dx = 20.f;
     if(!nameinput)
     {
+    qglColor(Qt::white);
     renderText(x,y,"Input world name:", Tfont);
     y += dy;
     renderText(x, y, wName, font);
@@ -284,6 +298,7 @@ void Terraformator::_draw_seedg()
     auto y  = app_h;
     auto dy = 55.f;
     auto dx = 20.f;
+    qglColor(Qt::white);
     if(!nameinput)
     {
     renderText(x,y,"Input world name:", Tfont);
@@ -377,8 +392,37 @@ void Terraformator::_key_Released_load(int aKey)
         case Qt::Key_Return:
             if(!nameinput)
                 nameinput = true;
-            if(!seedinput)
-                seedinput = true;
+            if(nameinput)
+            {
+                if(wName.size() == 0 || wName.size() == 1)
+                    nameinput = false;
+                else {
+                    wg GEN;
+                    GEN.ds(map, WS, NHMax, NHMin);
+
+                    const auto &lp = appSettings::instance().worldsPath();
+
+                    QString path =  "./" + wName + ".wrld";
+                    QFile file(path);
+                    file.open(QIODevice::WriteOnly);
+                    QTextStream in(&file);
+
+                        for(int i = 0; i < WS; i++)
+                        {
+                            for(int o = 0; o < WS; o++)
+                            {
+                                in << map[i][o];
+                                in << " ";
+                            }
+                            in << endl << endl;
+                        }
+                        file.close();
+
+                        mState = eState::MENU;
+                        nameinput = false;
+
+            }
+            }
             break;
         case Qt::Key_0:
             wName += '0';
@@ -640,3 +684,4 @@ void Terraformator::_key_Released_load(int aKey)
         updateGL();
 
     }
+
