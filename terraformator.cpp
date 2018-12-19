@@ -331,18 +331,26 @@ void Terraformator::_draw_load()
     auto y  = app_h;
     auto dy = 55.f;
     std::vector<QString> temp = appSettings::instance().savedWorlds;
-    for(int i = 0; i < temp.size(); i++)
+
+    int tmp = (ChoosedWorld - 6);
+    int start = tmp < 0 ? 0 : tmp;
+
+    tmp = (start + 6);
+    int end = (tmp < temp.size()) ? tmp : temp.size() - 1;
+
+    for(int i = start; i < end; i++)
     {
-        if(i == ChoosedWorld)
-        {
-            qglColor(Qt::red);
-            renderText(x, y, temp[i], Tfont);
-        }
-        else{
-        qglColor(Qt::white);
-        renderText(x,y, temp[i], font);
-        }
-        y += dy;
+        QFont  &rf = (i == ChoosedWorld) ? Tfont : font;
+
+            Qt::GlobalColor color = Qt::gray;
+
+            if(i == ChoosedWorld)
+                 color = Qt::red;
+            else color = Qt::white;
+
+            qglColor(color);
+            renderText(x,y,temp[i],rf);
+            y+=dy;
     }
 }
 
@@ -411,12 +419,12 @@ void Terraformator::_key_Released_load(int aKey)
     case Qt::Key_Up:
         ChoosedWorld--;
         if(ChoosedWorld < 0)
-            ChoosedWorld = appSettings::instance().savedWorlds.size() - 1;
+            ChoosedWorld = 0;
         break;
     case Qt::Key_Down:
         ChoosedWorld++;
-        if(ChoosedWorld > appSettings::instance().savedWorlds.size() - 1)
-            ChoosedWorld = 0;
+        if(ChoosedWorld >= appSettings::instance().savedWorlds.size())
+            ChoosedWorld = appSettings::instance().savedWorlds.size() - 1;
         break;
     }
     updateGL();
