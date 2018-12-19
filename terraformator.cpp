@@ -97,6 +97,8 @@ void Terraformator::InitializeGL()
     glEnable(GL_SMOOTH);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_TEXTURE_2D);
+
+    appSettings::instance().load();
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -147,6 +149,7 @@ void Terraformator::keyReleaseEvent(QKeyEvent* apKeyEvent)
         _key_Released_seedg(apKeyEvent->key());
         break;
     }
+    appSettings::instance().load();
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -186,6 +189,9 @@ void Terraformator::_draw()
         break;
     case eState::SEEDG:
         _draw_seedg();
+        break;
+    case eState::LOAD:
+        _draw_load();
         break;
     }
 }
@@ -297,7 +303,6 @@ void Terraformator::_draw_seedg()
     auto x  = app_w - 100;
     auto y  = app_h;
     auto dy = 55.f;
-    auto dx = 20.f;
     qglColor(Qt::white);
     if(!nameinput)
     {
@@ -313,7 +318,35 @@ void Terraformator::_draw_seedg()
     }
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
+void Terraformator::_draw_load()
+{
+    static auto app_w = appSettings::instance().screenWidth()  /2.f;
+    static auto app_h = appSettings::instance().screenHeight() /3.f;
 
+    static auto font          = QFont("Sans", 25);
+    static auto Tfont         = QFont("Sans", 30);
+    Tfont.setBold(true);
+
+    auto x  = app_w - 100;
+    auto y  = app_h;
+    auto dy = 55.f;
+    std::vector<QString> temp = appSettings::instance().savedWorlds;
+    for(int i = 0; i < temp.size(); i++)
+    {
+        if(i == ChoosedWorld)
+        {
+            qglColor(Qt::red);
+            renderText(x, y, temp[i], Tfont);
+        }
+        else{
+        qglColor(Qt::white);
+        renderText(x,y, temp[i], font);
+        }
+        y += dy;
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 
 void Terraformator::_key_Released_menu(int aKey)
 {
@@ -374,6 +407,16 @@ void Terraformator::_key_Released_load(int aKey)
     {
     case Qt::Key_Escape:
         mState = eState::MENU;
+        break;
+    case Qt::Key_Up:
+        ChoosedWorld--;
+        if(ChoosedWorld < 0)
+            ChoosedWorld = appSettings::instance().savedWorlds.size() - 1;
+        break;
+    case Qt::Key_Down:
+        ChoosedWorld++;
+        if(ChoosedWorld > appSettings::instance().savedWorlds.size() - 1)
+            ChoosedWorld = 0;
         break;
     }
     updateGL();
