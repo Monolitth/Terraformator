@@ -420,6 +420,7 @@ void Terraformator::_key_Released_load(int aKey)
 
                         mState = eState::MENU;
                         nameinput = false;
+                        wName.clear();
 
             }
             }
@@ -551,6 +552,43 @@ void Terraformator::_key_Released_load(int aKey)
                 nameinput = true;
             if(!seedinput)
                 seedinput = true;
+            if(nameinput)
+            {
+                if(wName.size() == 0 || wName.size() == 1)
+                    nameinput = false;
+                if(wSeed.size() == 0 || wName.size() == 1)
+                    seedinput = false;
+                else {
+                    wg GEN;
+                    GEN.ds(map, WS, NHMax, NHMin, wSeed.toInt());
+
+                    const auto &lp = appSettings::instance().worldsPath();
+
+                    QString path =  "./" + wName + ".wrld";
+                    QFile file(path);
+                    file.open(QIODevice::WriteOnly);
+                    QTextStream in(&file);
+
+                        for(int i = 0; i < WS; i++)
+                        {
+                            for(int o = 0; o < WS; o++)
+                            {
+                                in << map[i][o];
+                                in << " ";
+                            }
+                            in << endl << endl;
+                        }
+                        file.close();
+
+                        mState = eState::MENU;
+                        nameinput = false;
+                        seedinput = false;
+
+                        wName.clear();
+                        wSeed.clear();
+
+            }
+            }
             break;
         case Qt::Key_0:
             if(nameinput)
