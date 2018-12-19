@@ -1,53 +1,31 @@
-#include "appsettings.h"
-#include <QDirIterator>
+#ifndef APPSETTINGS_H
+#define APPSETTINGS_H
 
-static const QString worldpath = "./";
+#include <QString>
+#include <vector>
 
-appSettings::appSettings()
+class appSettings
 {
-    load();
-}
+    unsigned mScreenWidth{0};
+    unsigned mScreenHeight{0};
 
-appSettings::~appSettings()
-{
-    save();
-}
+    appSettings();
+    ~appSettings();
+public:
 
-appSettings &appSettings::instance()
-{
-    static appSettings res;
-    return res;
-}
+    appSettings(const appSettings&) = delete;
+    appSettings & operator=(const appSettings&) = delete;
 
-void appSettings::load()
-{
-    savedWorlds.clear();
-    QDirIterator it(worldsPath());
-    while(it.hasNext())
-    {
-        it.next();
-        QFileInfo info(it.fileInfo());
-        if(info.completeSuffix() == "wrld")
-            savedWorlds.push_back(info.baseName());
-    }
-}
-void appSettings::save()
-{
+    static appSettings &instance();
 
-}
+    void load();
+    void save();
 
-unsigned appSettings::screenWidth() const
-{
-    static unsigned res{800};
-    return res;
-}
-unsigned appSettings::screenHeight() const
-{
-    static unsigned res{600};
-    return res;
-}
+    unsigned screenWidth() const;
+    unsigned screenHeight() const;
+    QString worldsPath() const;
 
-QString appSettings::worldsPath() const
-{
-    return worldpath;
-}
+    std::vector<QString> savedWorlds;
+};
+
+#endif // APPSETTINGS_H
