@@ -1,7 +1,7 @@
 #include "appsettings.h"
 #include <QDirIterator>
 
-static const QString worldpath = "world/";
+static const QString worldpath = "./";
 
 appSettings::appSettings()
 {
@@ -21,6 +21,7 @@ appSettings &appSettings::instance()
 
 void appSettings::load()
 {
+    savedWorlds.clear();
     QDirIterator it(worldsPath());
     while(it.hasNext())
     {
@@ -29,8 +30,6 @@ void appSettings::load()
         if(info.completeSuffix() == "wrld")
             savedWorlds.push_back(info.baseName());
     }
-
-    std::sort(savedWorlds.begin(),savedWorlds.end());
 }
 void appSettings::save()
 {
